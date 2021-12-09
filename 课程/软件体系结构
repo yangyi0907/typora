@@ -1,0 +1,437 @@
+# 一、绪论
+
+## 1、定义
+
+### 1.组成派
+
+组成派关注于软件本身，将软件体系结构看做构件和交互的集合。
+有哪些部分组成，如何组成，强调整体结构和配置  
+
+**1992年， D E.Perry与A L.Wolf对软件架构进行了阐述，认为软件体系结构是
+具有一定形式的结构化元素。 这一定义在大多数定义中被广泛继承。    **
+
+元素（elements） 是指具有一定形式的结构化元素。包括处理元素（processing elements）、数据元素（data elements）和连接元素（connecting elements） 。
+✓ 处理元素负责对数据进行加工
+✓ 数据元素是被加工的信息
+✓ 连接元素把体系结构的不同部分组合连接起来  
+
+**1993年， D Garlan, M Shaw提出软件架构包括component、 connector和constraint三大要素。  **
+
+➢ 软件设计过程中的一个层次，超越了计算过程中的算法设计和数据结构设计。
+➢ 组件（component） 可以是一组代码，也可以是独立的程序；
+➢ 连接件（connector） 用于表示组件之间的相互关系，可以是过程调用、管道和消息等；
+➢ 约束（constraint） 为组件连接时的条件 。
+
+
+
+### 2.决策派
+
+决策派关注于软件架构中的实体（人），将软件体系结构视为一系列重要设计决策的集合。
+人员意志和决策， 注重架构风格和模式的选择
+
+**2011年， ISO/IEC/IEEE标准中定义软件架构是某一系统的基本组织结构，
+其内容包括软件构件，构件间的联系，构件与其环境间的联系，以及指导上述内
+容设计与演化的原理。**
+
+**1999年， Booch， Rumbaugh and Jacobson从另一个角度对软件架构的概
+念进行了全新的诠释，认为架构是一系列重要决策的集合。**
+
+  一系列重要决策的集合关于：
+✓ 软件系统的组织；
+✓ 组成系统的结构元素和它们之间的接口，
+及这些元素相互协作时所体现的行为；
+✓ 如何组合这些元素，使它们逐渐合成为更
+大的子系统；
+✓ 指导这一软件系统组织的架构风格。  
+
+### 3.软件体系结构定义总结
+
+软件体系结构 = 组件 + 连接件 + 约束
+Software Architecture = Components + Connectors + Constrains  
+
+➢ 组件： 具有某种功能的可重用的软件模块单元，表示了系统中主要的计算单元和数据存储。
+➢ 连接件： 表示了组件之间的交互，简单的连接件有：管道（pipe）、过程调用
+（procedure-call）、事件广播（event broadcast）等。复杂的连接件有：客户－服务器
+（client-server）通信协议，数据库和应用之间SQL连接等。
+➢ 约束： 表示了组件和连接件的拓扑逻辑和约束（constraint） 。  
+
+# 二、数据流体系结构风格
+
+## 1、软件体系结构风格-定义  
+
+描述特定领域中软件系统家族的组织方式的惯用模式(idiomatic paradigm)，反映了领域中众多系统所共有的结构和语义特性，并指导如何将各个模块和子系统有效地组织成一个完整的系统。  
+
+## 2、数据流体系结构风格
+
+### 1.直观理解 
+
+![image-20211205225333146](../images/image-20211205225333146.png)
+
+### 2.特征  
+
+➢ A data flow system is one in which
+➢ the availability of data controls the computation (数据的可用性决定着处理<计算单元>是否执行)
+➢ the structure of the design is decided by orderly
+motion of data from process to process (系统结构由数据在各处理之间的有序移动决定)
+➢ in a pure data flow system, there is no other interaction between processes (在纯数据流系统中，处理之间除了数据交换没有任何其他的交互)  
+
+### 3.基本构件  
+
+➢ Components: data processing components(基本构件：数据处理)
+➢ Interfaces are input ports and output ports (构件接口：输入
+端口和输出端口)， Input ports read data; output ports write
+data
+➢ Computational model: read data from input ports,
+compute, write data to output ports (计算模型：从输入端口
+读数，经过计算/处理， 然后写到输出端口)  
+
+![image-20211205225730694](../images/image-20211205225730694.png)
+
+### 4.连接件  
+
+➢ Connectors: data flow (stream) (连接件：数据流)
+✓ Unidirectional, usually asynchronous, buffered (单向、通常是异步、有缓冲)
+✓ Interfaces are reader and writer roles (接口角色： reader和writer)
+✓ Computational model (计算模型: 把数据从一个处理的输出端口传送到另一个处理的输入端口)  
+
+![image-20211205225741127](../images/image-20211205225741127.png)
+
+### 5.Patterns of Data Flow in Systems  
+
+![image-20211205230024144](../images/image-20211205230024144.png)
+
+### 6.典型数据流风格  
+
+![image-20211205230112691](../images/image-20211205230112691.png)
+
+## 3、批处理体系结构风格  
+
+### 1.定义  
+
+➢ Components (processing steps) are independent programs (基本构件：独立的应用程序)
+➢ Connectors are some type of media - traditionally tape (连接件：某种类型的媒质)
+➢ Topology: Connectors define data flow graph (连接件定义了相应的数据流图，表达拓扑结构)  
+
+➢ Processing steps are independent programs（每个处理步骤是一个独立的程序）
+➢ Each step runs to completion before next step starts（每一步必须在前一步结束后才能开始）
+➢ Data transmitted as a whole between steps（数据必须是完整的，以整体的方式传递）  
+
+### 2.应用实例  
+
+![image-20211205230903386](../images/image-20211205230903386.png)
+
+## 4、管道-过滤器体系结构风格  
+
+### 1.直观结构  
+
+![image-20211205231042272](../images/image-20211205231042272.png)
+
+### 2.定义  
+
+➢ 场境： 数据源源不断的产生，系统需要对这些数据进行若干处理(分析、计算、转换等)。
+
+➢ 解决方案：
+
+​	✓ 把系统分解为几个序贯的处理步骤，这些步骤之间通过数据流连接，一个步骤的输出是另一个步骤的输入；
+
+​	✓ 每个处理步骤由一个过滤器构件(Filter)实现；
+
+​	✓ 处理步骤之间的数据传输由管道(Pipe)负责。
+
+➢ 每个处理步骤(过滤器)都有一组输入和输出，过滤器从管道中读取输入的数据流，经过内部处理，然后产生输出数据流并写入管道中。 
+
+ ➢ Components: Filters — process data streams (构件：过滤器，处理数据流)
+
+​	✓ A filter encapsulates a processing step (algorithm or computation) (一个过滤器封装了一个处理步骤)
+
+​	✓ Data source and data end/sink are particular filters (数据源点和数据终止点可以看作是特殊的过滤器)
+
+➢ Connectors: A pipe connects a source and a end filter (连接件：管道，连接一个源和一个目的过滤器)
+
+​	✓ Pipes move data from a filter output to a filter input
+
+​	✓ Data may be a stream of ASCII characters
+
+➢ Topology: Connectors define data flow graph
+
+➢ Style invariants： Filters are independent  
+
+**Incrementally transform data from the source to the sink (递增的读取和消费数据流)，数据到来时便被处理，不是收集然后处理，即在输入被完全消费之前，输出便产生了。  **
+
+### 3.过滤器  
+
+1. Filter（过滤器 ）  
+
+➢ Incrementally transform some of the source data
+into sink data (目标：将源数据变换成目标数据)
+➢ Stream to stream transformation (从“数据流”→“数
+据流” 的变换)  
+
+![image-20211205231720961](../images/image-20211205231720961.png)
+
+2. Filters are independent entities.  
+
+➢ no context in processing streams (无上下文信息)
+➢ no state preservation between instantiations (不保留状态)
+➢ no knowledge of upstream/downstream filters (对其他过滤
+器无任何了解)  
+
+### 4.管道  
+
+Pipes: move data from a filter's output to a filter's input (or to a device or file).  
+
+➢ One way flow from one data source to one data sink (单向流)
+
+➢ A pipe may implement a buffer (可能具有缓冲区)
+
+➢ Pipes form data transmission graph (管道形成传输图)
+
+➢ 不同的管道中流动的数据流，可能具有不同的数据格式， 数据在流过每一个过滤器时，被过滤器进行了丰富、精练、转换、融合、分解等操作，因而发生了变化。  
+
+![image-20211205231938521](../images/image-20211205231938521.png)
+
+### 5.应用实例  
+
+➢ Compiler (编译器)
+➢ Unix pipes (Unix管道)
+➢ Image processing (图像处理)
+➢ Signal processing (信号处理)
+➢ Voice and video streaming (声音与图像处理)  
+
+### 6.Advantages  
+
+➢ 使构件具有良好的隐蔽性和高内聚、低耦合的特点，可将整个系统的输入/输出行为看成多个过滤器的行为的简单合成；
+
+➢ 支持软件复用， 只要提供适合在两个过滤器之间传送的数据，任何两个过滤器都可被连接起来
+
+➢ 系统维护和增强系统性能简单， 新的过滤器可以添加到现有系统中来， 旧的可以被改进的过滤器替换掉
+
+➢ 允许对一些如吞吐量、 死锁等属性的分析
+
+➢ 支持并行执行：每个过滤器是作为一个单独的任务完成，因此可与其它任务并行执行。  
+
+### 7.Disadvantages  
+
+➢ 不适合处理交互的应用
+✓在早期对交互应用需求不高的情况下提出
+✓当需要增量地显示改变时， 这个问题尤为严重
+➢ 系统性能不高， 并增加了编写过滤器的复杂性
+✓数据传输缺乏通用标准，每个过滤器都增加了解析和合成数据的工作
+✓绝大部分处理时间消耗在格式转换上
+✓不适用于需要大量共享数据的应用设置  
+
+## 5、批处理 VS 管道-过滤器  
+
+![image-20211205232207684](../images/image-20211205232207684.png)
+
+![image-20211205232218951](../images/image-20211205232218951.png)
+
+# 三、调用/返回体系结构风格  
+## 1、调用/返回风格
+
+• 主程序/子程序风格
+– 单线程控制，划分为若干处理步骤
+– 功能模块：把步骤集成至模块中
+• 抽象数据类型（ADT）
+– 操作和数据绑定在一起，隐藏实现和其他秘密
+• 面向对象
+– 方法（动态绑定），多态（子类），重用（继承）
+– 对象活动于不同的进程/线程（分布式对象）
+• CS结构、分层风格
+• 组件
+– 多个接口，二进制兼容，高级中间件  
+
+### 1.主程序/子程序风格  
+
+![image-20211208144817284](../images/image-20211208144817284.png)
+
+• Problem: This pattern is suitable for applications in which the computation can appropriately be defined via a hierarchy of procedure definitions.
+• Context: Many programming languages provide natural support for defining nested collections of procedures and for calling them hierarchically. These languages often allow collections of procedures to be grouped into modules, thereby introducing name-space locality. The execution environment usually provides a single thread of control in a single name space.
+• Solution:
+– System model: call and definition hierarchy, subsystems often defined via modularity
+– Components: procedures and explicitly visible data
+– Connectors: procedure calls and explicit data sharing
+– Control structure: single thread  
+
+### 2.模块分解
+
+• Parnas
+– Hide secrets. OK, what’s a “secret”?
+• Representation of data
+• Properties of a device, other than required properties
+• Mechanisms that support policies
+– Try to localize future change
+• Hide system details likely to change independently
+• Expose in interfaces assumptions unlikely to change
+– Use functions to allow for change
+• They’re easier to change than visible representation  
+
+### 3.封装/信息隐藏
+
+• Parnas: Hide secrets (not just representations)
+• Booch: Object’s behavior is characterized by actions
+that it suffers and that it requires
+• Practically speaking:
+– Object has state and operations, but also has responsibility
+for the integrity of its state
+– Object is known by its interface
+– Object is probably instantiated from a template
+– Object has operations to access and alter state and perhaps
+generator
+– There are different kinds of objects (e.g., actor, agent, server)  
+
+### 4.数据抽象/面向对象  
+
+• Problem: This pattern is suitable for applications in which a central issue is identifying and
+protecting related bodies of information, especially representation information.
+• Context: Numerous design methods provide strategies for identifying natural objects. Newer
+programming languages support various variations on the theme, so if the language choice or the
+methodology is fixed, that will strongly influence the flavor of the decomposition.
+• Solution:
+– System model: localized state maintenance
+– Components: managers (e.g., servers, objects, abstract data types)
+– Connectors: procedure call
+– Control structure: decentralized, usually single thread  
+
+### 5.面向对象体系结构的元素  
+
+• Encapsulation: Restrict access to certain information
+封装：限制对某些信息的访问
+• Interaction: Via procedure calls or similar protocol
+交互：通过过程调用或类似的协议
+• Polymorphism: Choose the method at run-time
+多态：在运行时选择具体的操作
+• Inheritance: Shared definitions of functionality
+继承：对共享的功能保持唯一的接口
+• Reuse and maintenance: Exploit encapsulation and locality to increase productivity
+复用和维护：利用封装和聚合提高生产力
+
+  ### 6.面向对象方法的问题  
+
+• Managing many objects
+– Vast sea of objects requires additional structuring
+对象的海洋需要额外的结构来容纳
+– Hierarchical design suggested by Booch and Parnas
+• Managing many interactions
+– Single interface can be limiting & unwieldy (hence, “friends”)
+单一的接口能力有限并且笨拙（于是，”友元”）
+– Some languages/systems permit multiple interfaces (inner class, interface, multiple inheritance)
+• Distributed responsibility for behavior
+– Makes system hard to understand
+– Interaction diagrams now used in design
+• Capturing families of related designs
+– Types/classes are often not enough
+– Design patterns as an emerging off-shoot  
+
+### 7.如何管理大的对象数据集  
+
+• Pure O-O design leads to large flat systems with many objects
+– Same old problems can reappear
+– Hundreds of modules => hard to find things
+– Need a way to impose structure
+• Need additional structure and discipline
+• Structuring options
+– Layers (which are not necessarily objects)
+– Supplemental index
+– Hierarchical decomposition: big objects and little objects  
+
+## 2、风格变种
+
+### 1.体系结构风格变种  
+
+• Client-server
+– Objects are processes
+进程就是对象
+– Asymmetric: client knows about servers, but not vice versa
+不对称：客户端知道服务器，反之则不然
+• Tiered 层次
+– Elaboration on client-server
+C/S模式的扩展
+– Aggregation into run-time strata
+运行时层的结合
+– Usually small number of tiers
+通常只有少量的层
+• Components (later)
+– Multiple interfaces
+– Special protocols for dynamic reconfiguration
+支持动态配置的专门协议  
+
+### 2.层次分格
+
+• Problem: This pattern is suitable for applications that involve distinct classes of services that can be arranged hierarchically. Often there are layers for basic system-level services, for utilities appropriate to many applications, and for specific tasks of the application.
+• Context 上下文: Frequently, each class of service is assigned to a layer and several
+different patterns are used to refine the various layers. Layers are most often
+used at the higher levels of design, using different patterns to refine the layers.
+• Solution 解决方案:
+– System model: hierarchy of opaque layers不透明层次
+– Components: usually composites; composites are most often collections of procedures
+– Connectors: depends on structure of components; often procedure calls under restricted visibility, might also be client/server
+– Control structure: single thread  
+
+![image-20211208151710693](../images/image-20211208151710693.png)
+
+• 每层为上一层提供服务，使用下一层的服务，只能见到与自己邻接的
+层 –适当时候(必不得已的时候)，可以允许一定的越层操作
+• 大的问题分解为若干个渐进的小问题，逐步解决，隐藏了很多复杂度
+• 修改一层，最多影响两层，而通常只能影响上层。接口稳固，则谁都
+不影响
+• 上层必须知道下层的身份，不能调整层次之间的顺序
+• 层层相调，影响性能  
+
+### 3.客户端/服务器风格  
+
+• 两层C/S结构
+• 三层C/S结构
+• B/S结构（浏览器/服务器风格）  
+
+### 4.两层客户端/服务器风格  
+
+• C/S软件体系结构是基于资源不对等，且为实现共享而提出的， 20世纪90年代成熟起来
+• C/S体系结构有三个主要组成部分：数据库服务器、客户应用程序和网络
+• 服务器（后台）负责数据管理，客户机（前台）完成与用户的交互任务。“胖客户机，瘦服务器”
+• 缺点：
+– 对客户端软硬件配置要求较高，客户端臃肿
+– 客户端程序设计复杂
+– 数据安全性不好。 客户端程序可以直接访问数据库服务器。
+– 信息内容和形式单一
+– 用户界面风格不一，使用繁杂，不利用推广使用
+– 软件维护与升级困难。每个客户机上的软件都需要维护  
+
+### 5.三层客户端/服务器风格  
+
+• 与二层C/S结构相比，增加了一个应用服务器。
+• 整个应用逻辑驻留在应用服务器上，只有表示层存在于客户机上：“瘦客户机”
+• 应用功能分为表示层、功能层、数据层三层
+– 表示层是应用的用户接口部分。通常使用图形用户界面
+– 功能层是应用的主体，实现具体的业务处理逻辑
+– 数据层是数据库管理系统。
+– 以上三层逻辑上独立。
+– 通常只有表示层配置在客户机中  
+
+
+
+• B/S体系结构是三层C/S体系结构的特例
+• 客户端有http浏览器即可
+– 为增强功能，往往还需要安装flash、 jvm及一些专用插件
+• 使用标准http/https协议，省却很多麻烦
+• 只能“拉”，不能“推”
+• 客户之间的通信只能通过服务器中转
+• 对客户机资源和其他网络资源的利用受限
+• B/S结构的安全性较难控制(SQL注入攻击…)
+• B/S结构的应用系统在数据查询等相应速度上，要远远低于C/S体系结构
+• 服务器的负荷大，客户机的资源浪费
+– 用jvm、 flash、 ActiveX等客户端计算技术解决  
+
+## 3、课程总结
+
+• 主程序/子程序风格
+– 单线程控制，划分为若干处理步骤
+– 功能模块：把步骤集成至模块中
+• 抽象数据类型（ADT）
+– 操作和数据绑定在一起，隐藏实现和其他秘密
+• 面向对象
+– 方法（动态绑定），多态（子类），重用（继承）
+– 对象活动于不同的进程/线程（分布式对象）
+• CS结构、分层风格
+• 组件
+– 多个接口，二进制兼容，高级中间件  
